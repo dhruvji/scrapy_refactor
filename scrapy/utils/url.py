@@ -9,6 +9,7 @@ to the w3lib.url module. Always import those from there instead.
 import re
 from typing import TYPE_CHECKING, Iterable, Optional, Type, Union, cast
 from urllib.parse import ParseResult, urldefrag, urlparse, urlunparse
+import string
 
 # scrapy.utils.url was moved to w3lib.url and import * ensures this
 # move doesn't break old code
@@ -93,6 +94,32 @@ def add_http_if_no_scheme(url: str) -> str:
         url = scheme + url
 
     return url
+
+def sanitize_module_name(module_name: str) -> str:
+    """Sanitize the given module name, by replacing dashes and points
+    with underscores and prefixing it with a letter if it doesn't start
+    with one
+    """
+    module_name = module_name.replace("-", "_").replace(".", "_")
+    if module_name[0] not in string.ascii_letters:
+        module_name = "a" + module_name
+    return module_name
+
+
+def extract_domain(url: str) -> str:
+    """Extract domain name from URL string"""
+    o = urlparse(url)
+    if o.scheme == "" and o.netloc == "":
+        o = urlparse("//" + url.lstrip("/"))
+    return o.netloc
+
+
+def verify_url_scheme(url: str) -> str:
+    """Check url for scheme and insert https if none found."""
+    parsed = urlparse(url)
+    if parsed.scheme == "" and parsed.netloc == "":
+        parsed = urlparse("//" + url)._replace(scheme="https")
+    return parsed.geturl()
 
 
 def _is_posix_path(string: str) -> bool:

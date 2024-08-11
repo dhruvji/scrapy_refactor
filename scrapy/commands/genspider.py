@@ -1,43 +1,15 @@
 import argparse
 import os
 import shutil
-import string
 from importlib import import_module
 from pathlib import Path
 from typing import List, Optional, Union, cast
-from urllib.parse import urlparse
 
 import scrapy
 from scrapy.commands import ScrapyCommand
 from scrapy.exceptions import UsageError
 from scrapy.utils.template import render_templatefile, string_camelcase
-
-
-def sanitize_module_name(module_name: str) -> str:
-    """Sanitize the given module name, by replacing dashes and points
-    with underscores and prefixing it with a letter if it doesn't start
-    with one
-    """
-    module_name = module_name.replace("-", "_").replace(".", "_")
-    if module_name[0] not in string.ascii_letters:
-        module_name = "a" + module_name
-    return module_name
-
-
-def extract_domain(url: str) -> str:
-    """Extract domain name from URL string"""
-    o = urlparse(url)
-    if o.scheme == "" and o.netloc == "":
-        o = urlparse("//" + url.lstrip("/"))
-    return o.netloc
-
-
-def verify_url_scheme(url: str) -> str:
-    """Check url for scheme and insert https if none found."""
-    parsed = urlparse(url)
-    if parsed.scheme == "" and parsed.netloc == "":
-        parsed = urlparse("//" + url)._replace(scheme="https")
-    return parsed.geturl()
+from scrapy.utils.url import extract_domain, sanitize_module_name, verify_url_scheme 
 
 
 class Command(ScrapyCommand):
