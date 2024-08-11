@@ -6,7 +6,6 @@ SitemapSpider, its API is subject to change without notice.
 """
 
 from typing import Any, Dict, Iterable, Iterator, Optional, Union
-from urllib.parse import urljoin
 
 import lxml.etree  # nosec
 
@@ -40,13 +39,4 @@ class Sitemap:
                 yield d
 
 
-def sitemap_urls_from_robots(
-    robots_text: str, base_url: Optional[str] = None
-) -> Iterable[str]:
-    """Return an iterator over all sitemap urls contained in the given
-    robots.txt file
-    """
-    for line in robots_text.splitlines():
-        if line.lstrip().lower().startswith("sitemap:"):
-            url = line.split(":", 1)[1].strip()
-            yield urljoin(base_url or "", url)
+

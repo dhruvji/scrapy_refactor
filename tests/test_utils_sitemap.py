@@ -1,6 +1,7 @@
 import unittest
 
-from scrapy.utils.sitemap import Sitemap, sitemap_urls_from_robots
+from scrapy.utils.sitemap import Sitemap
+from scrapy.utils.url import sitemap_urls_from_robots
 
 
 class SitemapTest(unittest.TestCase):

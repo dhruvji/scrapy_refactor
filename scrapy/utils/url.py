@@ -8,7 +8,7 @@ to the w3lib.url module. Always import those from there instead.
 
 import re
 from typing import TYPE_CHECKING, Iterable, Optional, Type, Union, cast
-from urllib.parse import ParseResult, urldefrag, urlparse, urlunparse
+from urllib.parse import ParseResult, urldefrag, urlparse, urlunparse, urljoin
 
 # scrapy.utils.url was moved to w3lib.url and import * ensures this
 # move doesn't break old code
@@ -185,3 +185,14 @@ def strip_url(
             "" if strip_fragment else parsed_url.fragment,
         )
     )
+    
+def sitemap_urls_from_robots(
+    robots_text: str, base_url: Optional[str] = None
+) -> Iterable[str]:
+    """Return an iterator over all sitemap urls contained in the given
+    robots.txt file
+    """
+    for line in robots_text.splitlines():
+        if line.lstrip().lower().startswith("sitemap:"):
+            url = line.split(":", 1)[1].strip()
+            yield urljoin(base_url or "", url)
