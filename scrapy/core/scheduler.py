@@ -206,7 +206,7 @@ class Scheduler(BaseScheduler):
         dupefilter_cls = load_object(crawler.settings["DUPEFILTER_CLASS"])
         return cls(
             dupefilter=build_from_crawler(dupefilter_cls, crawler),
-            jobdir=job_dir(crawler.settings),
+            jobdir=job_dir(crawler.setting, log=False),
             dqclass=load_object(crawler.settings["SCHEDULER_DISK_QUEUE"]),
             mqclass=load_object(crawler.settings["SCHEDULER_MEMORY_QUEUE"]),
             logunser=crawler.settings.getbool("SCHEDULER_DEBUG"),

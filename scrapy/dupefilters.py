@@ -73,7 +73,7 @@ class RFPDupeFilter(BaseDupeFilter):
         fingerprinter: Optional[RequestFingerprinterProtocol] = None,
     ) -> Self:
         debug = settings.getbool("DUPEFILTER_DEBUG")
-        return cls(job_dir(settings), debug, fingerprinter=fingerprinter)
+        return cls(job_dir(settings, log=False), debug, fingerprinter=fingerprinter)
 
     @classmethod
     def from_crawler(cls, crawler: Crawler) -> Self:

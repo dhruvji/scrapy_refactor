@@ -23,7 +23,7 @@ class SpiderState:
 
     @classmethod
     def from_crawler(cls, crawler: Crawler) -> Self:
-        jobdir = job_dir(crawler.settings)
+        jobdir = job_dir(crawler.settings, log=False)
         if not jobdir:
             raise NotConfigured
 
