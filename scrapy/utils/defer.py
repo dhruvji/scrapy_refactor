@@ -36,7 +36,7 @@ from twisted.internet.task import Cooperator
 from twisted.python import failure
 
 from scrapy.exceptions import IgnoreRequest, ScrapyDeprecationWarning
-from scrapy.utils.reactor import _get_asyncio_event_loop, is_asyncio_reactor_installed
+from scrapy.utils.reactor import _get_asyncio_event_loop, VerifyReactor
 
 if TYPE_CHECKING:
     from twisted.python.failure import Failure
@@ -377,7 +377,7 @@ def deferred_from_coro(o: _T) -> Union[Deferred, _T]:
     if isinstance(o, Deferred):
         return o
     if asyncio.isfuture(o) or inspect.isawaitable(o):
-        if not is_asyncio_reactor_installed():
+        if not VerifyReactor.is_asyncio_reactor_installed():
             # wrapping the coroutine directly into a Deferred, this doesn't work correctly with coroutines
             # that use asyncio, e.g. "await asyncio.sleep(1)"
             return ensureDeferred(cast(Coroutine[Deferred, Any, Any], o))
@@ -469,6 +469,6 @@ def maybe_deferred_to_future(d: Deferred[_T]) -> Union[Deferred[_T], Future[_T]]
                 deferred = self.crawler.engine.download(additional_request)
                 additional_response = await maybe_deferred_to_future(deferred)
     """
-    if not is_asyncio_reactor_installed():
+    if not VerifyReactor.is_asyncio_reactor_installed():
         return d
     return deferred_to_future(d)

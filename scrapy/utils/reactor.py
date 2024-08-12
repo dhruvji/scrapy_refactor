@@ -169,43 +169,50 @@ def set_asyncio_event_loop(event_loop_path: Optional[str]) -> AbstractEventLoop:
             asyncio.set_event_loop(event_loop)
     return event_loop
 
+class VerifyReactor:
+    """Class to verify the installed reactor and event loop."""
 
-def verify_installed_reactor(reactor_path: str) -> None:
-    """Raises :exc:`Exception` if the installed
-    :mod:`~twisted.internet.reactor` does not match the specified import
-    path."""
-    from twisted.internet import reactor
+    @staticmethod
+    def verify_installed_reactor(reactor_path: str) -> None:
+        """Raises :exc:`Exception` if the installed
+        :mod:`~twisted.internet.reactor` does not match the specified import
+        path."""
+        from twisted.internet import reactor
 
-    reactor_class = load_object(reactor_path)
-    if not reactor.__class__ == reactor_class:
-        msg = (
-            "The installed reactor "
-            f"({reactor.__module__}.{reactor.__class__.__name__}) does not "
-            f"match the requested one ({reactor_path})"
+        reactor_class = load_object(reactor_path)
+        if not reactor.__class__ == reactor_class:
+            msg = (
+                "The installed reactor "
+                f"({reactor.__module__}.{reactor.__class__.__name__}) does not "
+                f"match the requested one ({reactor_path})"
+            )
+            raise Exception(msg)
+
+    @staticmethod
+    def verify_installed_asyncio_event_loop(loop_path: str) -> None:
+        """Raises :exc:`Exception` if the installed
+        asyncio event loop does not match the specified import path."""
+        from twisted.internet import reactor
+
+        loop_class = load_object(loop_path)
+        if isinstance(reactor._asyncioEventloop, loop_class):
+            return
+        installed = (
+            f"{reactor._asyncioEventloop.__class__.__module__}"
+            f".{reactor._asyncioEventloop.__class__.__qualname__}"
         )
-        raise Exception(msg)
+        specified = f"{loop_class.__module__}.{loop_class.__qualname__}"
+        raise Exception(
+            "Scrapy found an asyncio Twisted reactor already "
+            f"installed, and its event loop class ({installed}) does "
+            "not match the one specified in the ASYNCIO_EVENT_LOOP "
+            f"setting ({specified})"
+        )
 
+    @staticmethod
+    def is_asyncio_reactor_installed() -> bool:
+        """Checks if the asyncio reactor is installed."""
+        from twisted.internet import reactor
 
-def verify_installed_asyncio_event_loop(loop_path: str) -> None:
-    from twisted.internet import reactor
+        return isinstance(reactor, asyncioreactor.AsyncioSelectorReactor)
 
-    loop_class = load_object(loop_path)
-    if isinstance(reactor._asyncioEventloop, loop_class):
-        return
-    installed = (
-        f"{reactor._asyncioEventloop.__class__.__module__}"
-        f".{reactor._asyncioEventloop.__class__.__qualname__}"
-    )
-    specified = f"{loop_class.__module__}.{loop_class.__qualname__}"
-    raise Exception(
-        "Scrapy found an asyncio Twisted reactor already "
-        f"installed, and its event loop class ({installed}) does "
-        "not match the one specified in the ASYNCIO_EVENT_LOOP "
-        f"setting ({specified})"
-    )
-
-
-def is_asyncio_reactor_installed() -> bool:
-    from twisted.internet import reactor
-
-    return isinstance(reactor, asyncioreactor.AsyncioSelectorReactor)

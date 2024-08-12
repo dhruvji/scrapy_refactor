@@ -93,18 +93,18 @@ Enforcing asyncio as a requirement
 ==================================
 
 If you are writing a :ref:`component <topics-components>` that requires asyncio
-to work, use :func:`scrapy.utils.reactor.is_asyncio_reactor_installed` to
+to work, use :func:`scrapy.utils.reactor.VerifyReactor` to
 :ref:`enforce it as a requirement <enforce-component-requirements>`. For
 example:
 
 .. code-block:: python
 
-    from scrapy.utils.reactor import is_asyncio_reactor_installed
+    from scrapy.utils.reactor import VerifyReactor
 
 
     class MyComponent:
         def __init__(self):
-            if not is_asyncio_reactor_installed():
+            if not VerifyReactor.is_asyncio_reactor_installed():
                 raise ValueError(
                     f"{MyComponent.__qualname__} requires the asyncio Twisted "
                     f"reactor. Make sure you have it configured in the "

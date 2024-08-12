@@ -7,7 +7,7 @@ from pytest import mark
 from scrapy.utils.defer import deferred_f_from_coro_f
 from scrapy.utils.reactor import (
     install_reactor,
-    is_asyncio_reactor_installed,
+    VerifyReactor,
     set_asyncio_event_loop,
 )
 
@@ -17,7 +17,7 @@ class AsyncioTest(TestCase):
     def test_is_asyncio_reactor_installed(self):
         # the result should depend only on the pytest --reactor argument
         self.assertEqual(
-            is_asyncio_reactor_installed(), self.reactor_pytest == "asyncio"
+            VerifyReactor.is_asyncio_reactor_installed(), self.reactor_pytest == "asyncio"
         )
 
     def test_install_asyncio_reactor(self):

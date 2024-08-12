@@ -47,9 +47,7 @@ from scrapy.utils.misc import build_from_crawler, load_object
 from scrapy.utils.ossignal import install_shutdown_handlers, signal_names
 from scrapy.utils.reactor import (
     install_reactor,
-    is_asyncio_reactor_installed,
-    verify_installed_asyncio_event_loop,
-    verify_installed_reactor,
+    VerifyReactor
 )
 
 if TYPE_CHECKING:
@@ -131,9 +129,9 @@ class Crawler:
                 from twisted.internet import reactor  # noqa: F401
             log_reactor_info()
         if reactor_class:
-            verify_installed_reactor(reactor_class)
-            if is_asyncio_reactor_installed() and event_loop:
-                verify_installed_asyncio_event_loop(event_loop)
+            VerifyReactor.verify_installed_reactor(reactor_class)
+            if VerifyReactor.is_asyncio_reactor_installed() and event_loop:
+                VerifyReactor.verify_installed_asyncio_event_loop(event_loop)
 
             log_reactor_info()
 

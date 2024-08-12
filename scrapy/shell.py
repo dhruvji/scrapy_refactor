@@ -24,7 +24,7 @@ from scrapy.utils.conf import get_config
 from scrapy.utils.console import DEFAULT_PYTHON_SHELLS, start_python_console
 from scrapy.utils.datatypes import SequenceExclude
 from scrapy.utils.misc import load_object
-from scrapy.utils.reactor import is_asyncio_reactor_installed, set_asyncio_event_loop
+from scrapy.utils.reactor import VerifyReactor, set_asyncio_event_loop
 from scrapy.utils.response import open_in_browser
 
 
@@ -97,7 +97,7 @@ class Shell:
     def _schedule(
         self, request: Request, spider: Optional[Spider]
     ) -> defer.Deferred[Any]:
-        if is_asyncio_reactor_installed():
+        if VerifyReactor.is_asyncio_reactor_installed():
             # set the asyncio event loop for the current thread
             event_loop_path = self.crawler.settings["ASYNCIO_EVENT_LOOP"]
             set_asyncio_event_loop(event_loop_path)
