@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from twisted.python.failure import Failure
 
 
-class ProcessTest:
+class TestProc:
     command: Optional[str] = None
     prefix = [sys.executable, "-m", "scrapy.cmdline"]
     cwd = os.getcwd()  # trial chdirs to temp dir

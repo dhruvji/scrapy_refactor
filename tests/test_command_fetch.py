@@ -1,11 +1,11 @@
 from twisted.internet import defer
 from twisted.trial import unittest
 
-from scrapy.utils.testproc import ProcessTest
+from scrapy.utils.testproc import TestProc
 from scrapy.utils.testsite import SiteTest
 
 
-class FetchTest(ProcessTest, SiteTest, unittest.TestCase):
+class FetchTest(TestProc, SiteTest, unittest.TestCase):
     command = "fetch"
 
     @defer.inlineCallbacks

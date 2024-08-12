@@ -7,13 +7,13 @@ from pexpect.popen_spawn import PopenSpawn
 from twisted.internet import defer
 from twisted.trial import unittest
 
-from scrapy.utils.testproc import ProcessTest
+from scrapy.utils.testproc import TestProc
 from scrapy.utils.testsite import SiteTest
 from tests import NON_EXISTING_RESOLVABLE, tests_datadir
 from tests.mockserver import MockServer
 
 
-class ShellTest(ProcessTest, SiteTest, unittest.TestCase):
+class ShellTest(TestProc, SiteTest, unittest.TestCase):
     command = "shell"
 
     @defer.inlineCallbacks

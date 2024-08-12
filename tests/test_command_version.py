@@ -4,10 +4,10 @@ from twisted.internet import defer
 from twisted.trial import unittest
 
 import scrapy
-from scrapy.utils.testproc import ProcessTest
+from scrapy.utils.testproc import TestProc
 
 
-class VersionTest(ProcessTest, unittest.TestCase):
+class VersionTest(TestProc, unittest.TestCase):
     command = "version"
 
     @defer.inlineCallbacks

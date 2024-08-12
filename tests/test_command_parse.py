@@ -7,7 +7,7 @@ from twisted.internet import defer
 from scrapy.commands import parse
 from scrapy.settings import Settings
 from scrapy.utils.python import to_unicode
-from scrapy.utils.testproc import ProcessTest
+from scrapy.utils.testproc import TestProc
 from scrapy.utils.testsite import SiteTest
 from tests.test_commands import CommandTest
 
@@ -18,7 +18,7 @@ def _textmode(bstr):
     return to_unicode(bstr).replace(os.linesep, "\n")
 
 
-class ParseCommandTest(ProcessTest, SiteTest, CommandTest):
+class ParseCommandTest(TestProc, SiteTest, CommandTest):
     command = "parse"
 
     def setUp(self):
