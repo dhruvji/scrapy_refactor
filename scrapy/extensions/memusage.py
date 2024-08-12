@@ -18,7 +18,7 @@ from twisted.internet import task
 from scrapy import signals
 from scrapy.exceptions import NotConfigured
 from scrapy.mail import MailSender
-from scrapy.utils.engine import get_engine_status
+from scrapy.utils.engine import _get_engine_status
 
 if TYPE_CHECKING:
     # typing.Self requires Python 3.11
@@ -154,6 +154,6 @@ class MemoryUsage:
             "ENGINE STATUS ------------------------------------------------------- \r\n"
         )
         s += "\r\n"
-        s += pformat(get_engine_status(self.crawler.engine))
+        s += pformat(_get_engine_status(self.crawler.engine))
         s += "\r\n"
         self.mail.send(rcpts, subject, s)

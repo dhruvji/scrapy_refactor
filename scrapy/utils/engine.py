@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from scrapy.core.engine import ExecutionEngine
 
 
-def get_engine_status(engine: ExecutionEngine) -> List[Tuple[str, Any]]:
+def _get_engine_status(engine: ExecutionEngine) -> List[Tuple[str, Any]]:
     """Return a report of the current engine status"""
     tests = [
         "time()-engine.start_time",
@@ -39,8 +39,8 @@ def get_engine_status(engine: ExecutionEngine) -> List[Tuple[str, Any]]:
     return checks
 
 
-def format_engine_status(engine: ExecutionEngine) -> str:
-    checks = get_engine_status(engine)
+def _format_engine_status(engine: ExecutionEngine) -> str:
+    checks = _get_engine_status(engine)
     s = "Execution engine status\n\n"
     for test, result in checks:
         s += f"{test:<47} : {result}\n"
@@ -49,5 +49,5 @@ def format_engine_status(engine: ExecutionEngine) -> str:
     return s
 
 
-def print_engine_status(engine: ExecutionEngine) -> None:
-    print(format_engine_status(engine))
+def _print_engine_status(engine: ExecutionEngine) -> None:
+    print(_format_engine_status(engine))

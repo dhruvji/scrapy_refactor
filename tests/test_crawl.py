@@ -300,12 +300,12 @@ with multiples lines
 
     @defer.inlineCallbacks
     def test_engine_status(self):
-        from scrapy.utils.engine import get_engine_status
+        from scrapy.utils.engine import _get_engine_status
 
         est = []
 
         def cb(response):
-            est.append(get_engine_status(crawler.engine))
+            est.append(_get_engine_status(crawler.engine))
 
         crawler = get_crawler(SingleRequestSpider)
         yield crawler.crawl(
@@ -318,12 +318,12 @@ with multiples lines
 
     @defer.inlineCallbacks
     def test_format_engine_status(self):
-        from scrapy.utils.engine import format_engine_status
+        from scrapy.utils.engine import _format_engine_status
 
         est = []
 
         def cb(response):
-            est.append(format_engine_status(crawler.engine))
+            est.append(_format_engine_status(crawler.engine))
 
         crawler = get_crawler(SingleRequestSpider)
         yield crawler.crawl(

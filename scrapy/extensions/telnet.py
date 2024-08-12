@@ -18,7 +18,7 @@ from twisted.internet.tcp import Port
 from scrapy import signals
 from scrapy.exceptions import NotConfigured
 from scrapy.utils.decorators import defers
-from scrapy.utils.engine import print_engine_status
+from scrapy.utils.engine import _print_engine_status
 from scrapy.utils.reactor import listen_tcp
 from scrapy.utils.trackref import print_live_refs
 
@@ -109,7 +109,7 @@ class TelnetConsole(protocol.ServerFactory):
             "extensions": self.crawler.extensions,
             "stats": self.crawler.stats,
             "settings": self.crawler.settings,
-            "est": lambda: print_engine_status(self.crawler.engine),
+            "est": lambda: _print_engine_status(self.crawler.engine),
             "p": pprint.pprint,
             "prefs": print_live_refs,
             "help": "This is Scrapy telnet console. For more info see: "

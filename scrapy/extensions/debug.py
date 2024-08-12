@@ -14,7 +14,7 @@ import traceback
 from pdb import Pdb
 from typing import TYPE_CHECKING, Optional
 
-from scrapy.utils.engine import format_engine_status
+from scrapy.utils.engine import _format_engine_status
 from scrapy.utils.trackref import format_live_refs
 
 if TYPE_CHECKING:
@@ -47,7 +47,7 @@ class StackTraceDump:
         assert self.crawler.engine
         log_args = {
             "stackdumps": self._thread_stacks(),
-            "enginestatus": format_engine_status(self.crawler.engine),
+            "enginestatus": _format_engine_status(self.crawler.engine),
             "liverefs": format_live_refs(),
         }
         logger.info(
