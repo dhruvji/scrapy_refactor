@@ -26,7 +26,11 @@ from scrapy.utils.python import re_rsearch
 logger = logging.getLogger(__name__)
 
 
-def xmliter(obj: Union[Response, str, bytes], nodename: str) -> Iterator[Selector]:
+def xmliter(
+    obj: Union[Response, str, bytes], 
+    nodename: str, 
+    log: bool = True
+) -> Iterator[Selector]:
     """Return a iterator of Selector's over all nodes of a XML document,
        given the name of the node to iterate. Useful for parsing XML feeds.
 
@@ -79,7 +83,10 @@ def xmliter(obj: Union[Response, str, bytes], nodename: str) -> Iterator[Selecto
             )
             + header_end
         )
+        if log:
+            logger.info(f"Found node: {match.group()}")
         yield Selector(text=nodetext, type="xml")
+
 
 
 def xmliter_lxml(

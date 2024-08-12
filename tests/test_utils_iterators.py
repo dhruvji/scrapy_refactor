@@ -27,7 +27,7 @@ class XmliterBaseTestCase:
 
         response = XmlResponse(url="http://example.com", body=body)
         attrs = []
-        for x in self.xmliter(response, "product"):
+        for x in self.xmliter(response, "product", log=False):
             attrs.append(
                 (
                     x.attrib["id"],
@@ -50,7 +50,7 @@ class XmliterBaseTestCase:
         """
         response = XmlResponse(url="http://example.com", body=body)
         nodenames = [
-            e.xpath("name()").getall() for e in self.xmliter(response, "matchme...")
+            e.xpath("name()").getall() for e in self.xmliter(response, "matchme...", log=False)
         ]
         self.assertEqual(nodenames, [["matchme..."]])
 
@@ -100,7 +100,7 @@ class XmliterBaseTestCase:
             XmlResponse(url="http://example.com", body=body, encoding="utf-8"),
         ):
             attrs = []
-            for x in self.xmliter(r, "þingflokkur"):
+            for x in self.xmliter(r, "þingflokkur", log=False):
                 attrs.append(
                     (
                         x.attrib["id"],
@@ -122,7 +122,7 @@ class XmliterBaseTestCase:
         )
 
         self.assertEqual(
-            [x.xpath("text()").getall() for x in self.xmliter(body, "product")],
+            [x.xpath("text()").getall() for x in self.xmliter(body, "product", log=False)],
             [["one"], ["two"]],
         )
 
@@ -147,7 +147,7 @@ class XmliterBaseTestCase:
             </rss>
         """
         response = XmlResponse(url="http://mydummycompany.com", body=body)
-        my_iter = self.xmliter(response, "item")
+        my_iter = self.xmliter(response, "item", log=False)
         node = next(my_iter)
         node.register_namespace("g", "http://base.google.com/ns/1.0")
         self.assertEqual(node.xpath("title/text()").getall(), ["Item 1"])
@@ -187,7 +187,7 @@ class XmliterBaseTestCase:
             </rss>
         """
         response = XmlResponse(url="http://mydummycompany.com", body=body)
-        my_iter = self.xmliter(response, "g:image_link")
+        my_iter = self.xmliter(response, "g:image_link", log=False)
         node = next(my_iter)
         node.register_namespace("g", "http://base.google.com/ns/1.0")
         self.assertEqual(
@@ -216,7 +216,7 @@ class XmliterBaseTestCase:
             </rss>
         """
         response = XmlResponse(url="http://mydummycompany.com", body=body)
-        my_iter = self.xmliter(response, "g:link_image")
+        my_iter = self.xmliter(response, "g:link_image", log=False)
         with self.assertRaises(StopIteration):
             next(my_iter)
 
@@ -227,7 +227,7 @@ class XmliterBaseTestCase:
             "<products><product>one</product><product>two</product></products>"
         )
 
-        iter = self.xmliter(body, "product")
+        iter = self.xmliter(body, "product", log=False)
         next(iter)
         next(iter)
 
@@ -235,7 +235,7 @@ class XmliterBaseTestCase:
 
     @pytest.mark.filterwarnings("ignore::scrapy.exceptions.ScrapyDeprecationWarning")
     def test_xmliter_objtype_exception(self):
-        i = self.xmliter(42, "product")
+        i = self.xmliter(42, "product", log=False)
         self.assertRaises(TypeError, next, i)
 
     @pytest.mark.filterwarnings("ignore::scrapy.exceptions.ScrapyDeprecationWarning")
@@ -248,7 +248,7 @@ class XmliterBaseTestCase:
         )
         response = XmlResponse("http://www.example.com", body=body)
         self.assertEqual(
-            next(self.xmliter(response, "item")).get(),
+            next(self.xmliter(response, "item", log=False)).get(),
             "<item>Some Turkish Characters \xd6\xc7\u015e\u0130\u011e\xdc \xfc\u011f\u0131\u015f\xe7\xf6</item>",
         )
 
@@ -267,7 +267,7 @@ class XmliterTestCase(XmliterBaseTestCase, unittest.TestCase):
             ScrapyDeprecationWarning,
             match="xmliter",
         ):
-            next(self.xmliter(body, "product"))
+            next(self.xmliter(body, "product", log=False))
 
 
 class LxmlXmliterTestCase(XmliterBaseTestCase, unittest.TestCase):
@@ -293,11 +293,11 @@ class LxmlXmliterTestCase(XmliterBaseTestCase, unittest.TestCase):
         """
         response = XmlResponse(url="http://mydummycompany.com", body=body)
 
-        no_namespace_iter = self.xmliter(response, "image_link")
+        no_namespace_iter = self.xmliter(response, "image_link", log=False)
         self.assertEqual(len(list(no_namespace_iter)), 0)
 
         namespace_iter = self.xmliter(
-            response, "image_link", "http://base.google.com/ns/1.0"
+            response, "image_link", "http://base.google.com/ns/1.0", log=False
         )
         node = next(namespace_iter)
         self.assertEqual(
@@ -330,7 +330,7 @@ class LxmlXmliterTestCase(XmliterBaseTestCase, unittest.TestCase):
         </root>
         """
         response = XmlResponse(url="http://mydummycompany.com", body=body)
-        my_iter = self.xmliter(response, "table", "http://www.w3.org/TR/html4/", "h")
+        my_iter = self.xmliter(response, "table", "http://www.w3.org/TR/html4/", "h", log=False)
 
         node = next(my_iter)
         self.assertEqual(len(node.xpath("h:tr/h:td").getall()), 2)
@@ -338,14 +338,14 @@ class LxmlXmliterTestCase(XmliterBaseTestCase, unittest.TestCase):
         self.assertEqual(node.xpath("h:tr/h:td[2]/text()").getall(), ["Bananas"])
 
         my_iter = self.xmliter(
-            response, "table", "http://www.w3schools.com/furniture", "f"
+            response, "table", "http://www.w3schools.com/furniture", "f", log=False
         )
 
         node = next(my_iter)
         self.assertEqual(node.xpath("f:name/text()").getall(), ["African Coffee Table"])
 
     def test_xmliter_objtype_exception(self):
-        i = self.xmliter(42, "product")
+        i = self.xmliter(42, "product", log=False)
         self.assertRaises(TypeError, next, i)
 
 
