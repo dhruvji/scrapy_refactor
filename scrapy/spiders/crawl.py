@@ -31,8 +31,10 @@ from scrapy.http import HtmlResponse, Request, Response
 from scrapy.link import Link
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import Spider
+from scrapy.spiders.spider_utils import _get_method, _identity, _identity_process_request
 from scrapy.utils.asyncgen import collect_asyncgen
 from scrapy.utils.spider import iterate_spider_output
+
 
 if TYPE_CHECKING:
     # typing.Self requires Python 3.11
@@ -42,33 +44,10 @@ if TYPE_CHECKING:
     from scrapy.http.request import CallbackT
 
 
-_T = TypeVar("_T")
-ProcessLinksT = Callable[[List[Link]], List[Link]]
-ProcessRequestT = Callable[[Request, Response], Optional[Request]]
-
-
-def _identity(x: _T) -> _T:
-    return x
-
-
-def _identity_process_request(
-    request: Request, response: Response
-) -> Optional[Request]:
-    return request
-
-
-def _get_method(
-    method: Union[Callable, str, None], spider: Spider
-) -> Optional[Callable]:
-    if callable(method):
-        return method
-    if isinstance(method, str):
-        return getattr(spider, method, None)
-    return None
-
-
 _default_link_extractor = LinkExtractor()
 
+ProcessLinksT = Callable[[List[Link]], List[Link]]
+ProcessRequestT = Callable[[Request, Response], Optional[Request]]
 
 class Rule:
     def __init__(

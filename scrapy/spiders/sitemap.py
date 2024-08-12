@@ -17,9 +17,11 @@ from typing import (
 
 from scrapy.http import Request, Response, XmlResponse
 from scrapy.spiders import Spider
+from scrapy.spiders.spider_utils import regex, iterloc
 from scrapy.utils._compression import _DecompressionMaxSizeExceeded
 from scrapy.utils.gz import gunzip, gzip_magic_number
 from scrapy.utils.sitemap import Sitemap, sitemap_urls_from_robots
+
 
 if TYPE_CHECKING:
     # typing.Self requires Python 3.11
@@ -136,16 +138,4 @@ class SitemapSpider(Spider):
         return None
 
 
-def regex(x: Union[re.Pattern[str], str]) -> re.Pattern[str]:
-    if isinstance(x, str):
-        return re.compile(x)
-    return x
 
-
-def iterloc(it: Iterable[Dict[str, Any]], alt: bool = False) -> Iterable[str]:
-    for d in it:
-        yield d["loc"]
-
-        # Also consider alternate URLs (xhtml:link rel="alternate")
-        if alt and "alternate" in d:
-            yield from d["alternate"]
