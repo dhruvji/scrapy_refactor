@@ -73,10 +73,10 @@ remain disabled. Those components include:
 
 The exception must be raised in the component's ``__init__`` method.
 
-NotSupported
+Unsupported
 ------------
 
-.. exception:: NotSupported
+.. exception:: Unsupported
 
 This exception is raised to indicate an unsupported feature.
 

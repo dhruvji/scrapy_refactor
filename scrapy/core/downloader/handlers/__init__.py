@@ -19,7 +19,7 @@ from typing import (
 from twisted.internet import defer
 
 from scrapy import Request, Spider, signals
-from scrapy.exceptions import NotConfigured, NotSupported
+from scrapy.exceptions import NotConfigured, Unsupported
 from scrapy.utils.httpobj import urlparse_cached
 from scrapy.utils.misc import build_from_crawler, load_object
 from scrapy.utils.python import without_none_values
@@ -108,7 +108,7 @@ class DownloadHandlers:
         scheme = urlparse_cached(request).scheme
         handler = self._get_handler(scheme)
         if not handler:
-            raise NotSupported(
+            raise Unsupported(
                 f"Unsupported URL scheme '{scheme}': {self._notconfigured[scheme]}"
             )
         return handler.download_request(request, spider)

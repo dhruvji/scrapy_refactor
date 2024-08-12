@@ -67,8 +67,8 @@ class DropItem(Exception):
     pass
 
 
-class NotSupported(Exception):
-    """Indicates a feature or method is not supported"""
+class Unsupported(Exception):
+    """Indicates a feature or method is unsupported"""
 
     pass
 

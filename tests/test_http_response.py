@@ -7,7 +7,7 @@ from pytest import mark
 from w3lib import __version__ as w3lib_version
 from w3lib.encoding import resolve_encoding
 
-from scrapy.exceptions import NotSupported
+from scrapy.exceptions import Unsupported
 from scrapy.http import (
     Headers,
     HtmlResponse,
@@ -193,9 +193,9 @@ class BaseResponseTest(unittest.TestCase):
         if self.response_class == Response:
             msg = "Response content isn't text"
             self.assertRaisesRegex(AttributeError, msg, getattr, r, "text")
-            self.assertRaisesRegex(NotSupported, msg, r.css, "body")
-            self.assertRaisesRegex(NotSupported, msg, r.xpath, "//body")
-            self.assertRaisesRegex(NotSupported, msg, r.jmespath, "body")
+            self.assertRaisesRegex(Unsupported, msg, r.css, "body")
+            self.assertRaisesRegex(Unsupported, msg, r.xpath, "//body")
+            self.assertRaisesRegex(Unsupported, msg, r.jmespath, "body")
         else:
             r.text
             r.css("body")

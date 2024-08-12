@@ -7,7 +7,7 @@ See documentation in docs/topics/spiders.rst
 
 from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
 
-from scrapy.exceptions import NotConfigured, NotSupported
+from scrapy.exceptions import NotConfigured, Unsupported
 from scrapy.http import Response, TextResponse
 from scrapy.selector import Selector
 from scrapy.spiders import Spider
@@ -89,7 +89,7 @@ class XMLFeedSpider(Spider):
             self._register_namespaces(selector)
             nodes = selector.xpath(f"//{self.itertag}")
         else:
-            raise NotSupported("Unsupported node iterator")
+            raise Unsupported("Unsupported node iterator")
 
         return self.parse_nodes(response, nodes)
 

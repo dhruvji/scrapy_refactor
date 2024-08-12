@@ -25,7 +25,7 @@ from typing import (
 )
 from urllib.parse import urljoin
 
-from scrapy.exceptions import NotSupported
+from scrapy.exceptions import Unsupported
 from scrapy.http.headers import Headers
 from scrapy.http.request import Request
 from scrapy.link import Link
@@ -181,19 +181,19 @@ class Response(object_ref):
         """Shortcut method implemented only by responses whose content
         is text (subclasses of TextResponse).
         """
-        raise NotSupported("Response content isn't text")
+        raise Unsupported("Response content isn't text")
 
     def jmespath(self, *a: Any, **kw: Any) -> SelectorList:
         """Shortcut method implemented only by responses whose content
         is text (subclasses of TextResponse).
         """
-        raise NotSupported("Response content isn't text")
+        raise Unsupported("Response content isn't text")
 
     def xpath(self, *a: Any, **kw: Any) -> SelectorList:
         """Shortcut method implemented only by responses whose content
         is text (subclasses of TextResponse).
         """
-        raise NotSupported("Response content isn't text")
+        raise Unsupported("Response content isn't text")
 
     def follow(
         self,
