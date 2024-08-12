@@ -115,9 +115,13 @@ def send_catch_log_deferred(
     return d3
 
 
-def disconnect_all(signal: TypingAny = Any, sender: TypingAny = Any) -> None:
-    """Disconnect all signal handlers. Useful for cleaning up after running
-    tests
-    """
+def disconnect_all(signal: TypingAny = Any, sender: TypingAny = Any, log: bool = True) -> None:
+    """Disconnect all signal handlers. Useful for cleaning up after running tests."""
+    if log:
+        logger.info(f"Disconnecting all handlers for signal: {signal} and sender: {sender}")
+
     for receiver in liveReceivers(getAllReceivers(sender, signal)):
         disconnect(receiver, signal=signal, sender=sender)
+
+    if log:
+        logger.info("All handlers disconnected.")

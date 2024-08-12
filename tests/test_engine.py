@@ -200,7 +200,7 @@ class CrawlerRun:
         self.port.stopListening()  # FIXME: wait for this Deferred
         for name, signal in vars(signals).items():
             if not name.startswith("_"):
-                disconnect_all(signal)
+                disconnect_all(signal, log=False)
         self.deferred.callback(None)
         return self.crawler.stop()
 

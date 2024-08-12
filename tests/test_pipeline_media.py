@@ -68,7 +68,7 @@ class BaseMediaPipelineTestCase(unittest.TestCase):
     def tearDown(self):
         for name, signal in vars(signals).items():
             if not name.startswith("_"):
-                disconnect_all(signal)
+                disconnect_all(signal, log=False)
 
     def test_modify_media_request(self):
         request = Request("http://url")
