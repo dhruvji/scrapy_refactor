@@ -16,7 +16,7 @@ from scrapy.utils._compression import (
     _unzstd,
 )
 from scrapy.utils.deprecate import ScrapyDeprecationWarning
-from scrapy.utils.gz import gunzip
+from scrapy.utils.gz import GunzipParams, gunzip
 
 if TYPE_CHECKING:
     # typing.Self requires Python 3.11
@@ -179,7 +179,8 @@ class HttpCompressionMiddleware:
 
     def _decode(self, body: bytes, encoding: bytes, max_size: int) -> bytes:
         if encoding in {b"gzip", b"x-gzip"}:
-            return gunzip(body, max_size=max_size)
+            params = GunzipParams(body, max_size=max_size)
+            return gunzip(params)
         if encoding == b"deflate":
             return _inflate(body, max_size=max_size)
         if encoding == b"br" and b"br" in ACCEPTED_ENCODINGS:

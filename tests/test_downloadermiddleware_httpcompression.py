@@ -16,7 +16,7 @@ from scrapy.exceptions import IgnoreRequest, NotConfigured, ScrapyDeprecationWar
 from scrapy.http import HtmlResponse, Request, Response
 from scrapy.responsetypes import responsetypes
 from scrapy.spiders import Spider
-from scrapy.utils.gz import gunzip
+from scrapy.utils.gz import GunzipParams, gunzip
 from scrapy.utils.test import get_crawler
 from tests import tests_datadir
 
@@ -387,20 +387,20 @@ class HttpCompressionTest(TestCase):
         # build a gzipped file (here, a sitemap)
         f = BytesIO()
         plainbody = b"""<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.google.com/schemas/sitemap/0.84">
-  <url>
-    <loc>http://www.example.com/</loc>
-    <lastmod>2009-08-16</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1</priority>
-  </url>
-  <url>
-    <loc>http://www.example.com/Special-Offers.html</loc>
-    <lastmod>2009-08-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-</urlset>"""
+    <urlset xmlns="http://www.google.com/schemas/sitemap/0.84">
+    <url>
+        <loc>http://www.example.com/</loc>
+        <lastmod>2009-08-16</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>1</priority>
+    </url>
+    <url>
+        <loc>http://www.example.com/Special-Offers.html</loc>
+        <lastmod>2009-08-16</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    </urlset>"""
         gz_file = GzipFile(fileobj=f, mode="wb")
         gz_file.write(plainbody)
         gz_file.close()
@@ -417,9 +417,11 @@ class HttpCompressionTest(TestCase):
         request = Request("http://www.example.com/")
 
         newresponse = self.mw.process_response(request, response, self.spider)
-        self.assertEqual(gunzip(newresponse.body), plainbody)
+        params = GunzipParams(data=newresponse.body)
+        self.assertEqual(gunzip(params), plainbody)
         self.assertStatsEqual("httpcompression/response_count", 1)
         self.assertStatsEqual("httpcompression/response_bytes", 230)
+
 
     def test_process_response_head_request_no_decode_required(self):
         response = self._getresponse("gzip")

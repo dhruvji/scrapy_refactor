@@ -9,14 +9,20 @@ from ._compression import _CHUNK_SIZE, _DecompressionMaxSizeExceeded
 
 if TYPE_CHECKING:
     from scrapy.http import Response
+    
+class GunzipParams:
+    def __init__(self, data: bytes, max_size: int = 0):
+        self.data = data
+        self.max_size = max_size
 
 
-def gunzip(data: bytes, *, max_size: int = 0) -> bytes:
+
+def gunzip(params: GunzipParams) -> bytes:
     """Gunzip the given data and return as much data as possible.
 
     This is resilient to CRC checksum errors.
     """
-    f = GzipFile(fileobj=BytesIO(data))
+    f = GzipFile(fileobj=BytesIO(params.data))
     output_stream = BytesIO()
     chunk = b"."
     decompressed_size = 0
@@ -31,11 +37,11 @@ def gunzip(data: bytes, *, max_size: int = 0) -> bytes:
                 break
             raise
         decompressed_size += len(chunk)
-        if max_size and decompressed_size > max_size:
+        if params.max_size and decompressed_size > params.max_size:
             raise _DecompressionMaxSizeExceeded(
                 f"The number of bytes decompressed so far "
                 f"({decompressed_size} B) exceed the specified maximum "
-                f"({max_size} B)."
+                f"({params.max_size} B)."
             )
         output_stream.write(chunk)
     output_stream.seek(0)

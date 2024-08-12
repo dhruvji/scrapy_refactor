@@ -4,7 +4,7 @@ from pathlib import Path
 from w3lib.encoding import html_to_unicode
 
 from scrapy.http import Response
-from scrapy.utils.gz import gunzip, gzip_magic_number
+from scrapy.utils.gz import gunzip, gzip_magic_number, GunzipParams
 from tests import tests_datadir
 
 SAMPLEDIR = Path(tests_datadir, "compressed")
@@ -18,18 +18,19 @@ class GunzipTest(unittest.TestCase):
         )
         self.assertTrue(gzip_magic_number(r1))
 
-        r2 = Response("http://www.example.com", body=gunzip(r1.body))
+        params = GunzipParams(data=r1.body)
+        r2 = Response("http://www.example.com", body=gunzip(params))
         self.assertFalse(gzip_magic_number(r2))
         self.assertEqual(len(r2.body), 9950)
 
     def test_gunzip_truncated(self):
-        text = gunzip((SAMPLEDIR / "truncated-crc-error.gz").read_bytes())
+        params = GunzipParams(data=(SAMPLEDIR / "truncated-crc-error.gz").read_bytes())
+        text = gunzip(params)
         assert text.endswith(b"</html")
 
     def test_gunzip_no_gzip_file_raises(self):
-        self.assertRaises(
-            OSError, gunzip, (SAMPLEDIR / "feed-sample1.xml").read_bytes()
-        )
+        params = GunzipParams(data=(SAMPLEDIR / "feed-sample1.xml").read_bytes())
+        self.assertRaises(OSError, gunzip, params)
 
     def test_gunzip_truncated_short(self):
         r1 = Response(
@@ -38,7 +39,8 @@ class GunzipTest(unittest.TestCase):
         )
         self.assertTrue(gzip_magic_number(r1))
 
-        r2 = Response("http://www.example.com", body=gunzip(r1.body))
+        params = GunzipParams(data=r1.body)
+        r2 = Response("http://www.example.com", body=gunzip(params))
         assert r2.body.endswith(b"</html>")
         self.assertFalse(gzip_magic_number(r2))
 
@@ -47,11 +49,13 @@ class GunzipTest(unittest.TestCase):
         self.assertFalse(gzip_magic_number(r1))
 
     def test_gunzip_illegal_eof(self):
+        params = GunzipParams(data=(SAMPLEDIR / "unexpected-eof.gz").read_bytes())
         text = html_to_unicode(
-            "charset=cp1252", gunzip((SAMPLEDIR / "unexpected-eof.gz").read_bytes())
+            "charset=cp1252", gunzip(params)
         )[1]
         expected_text = (SAMPLEDIR / "unexpected-eof-output.txt").read_text(
             encoding="utf-8"
         )
         self.assertEqual(len(text), len(expected_text))
         self.assertEqual(text, expected_text)
+

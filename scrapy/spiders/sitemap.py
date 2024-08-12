@@ -18,7 +18,7 @@ from typing import (
 from scrapy.http import Request, Response, XmlResponse
 from scrapy.spiders import Spider
 from scrapy.utils._compression import _DecompressionMaxSizeExceeded
-from scrapy.utils.gz import gunzip, gzip_magic_number
+from scrapy.utils.gz import GunzipParams, gunzip, gzip_magic_number
 from scrapy.utils.sitemap import Sitemap, sitemap_urls_from_robots
 
 if TYPE_CHECKING:
@@ -113,7 +113,8 @@ class SitemapSpider(Spider):
             max_size = response.meta.get("download_maxsize", self._max_size)
             warn_size = response.meta.get("download_warnsize", self._warn_size)
             try:
-                body = gunzip(response.body, max_size=max_size)
+                params = GunzipParams(response.body, max_size=max_size)
+                body = gunzip(params)
             except _DecompressionMaxSizeExceeded:
                 return None
             if uncompressed_size < warn_size <= len(body):
