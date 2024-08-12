@@ -22,10 +22,10 @@ class Command(ScrapyCommand):
     def syntax(self) -> str:
         return "[options] <url>"
 
-    def short_desc(self) -> str:
+    def short_description(self) -> str:
         return "Fetch a URL using the Scrapy downloader"
 
-    def long_desc(self) -> str:
+    def long_description(self) -> str:
         return (
             "Fetch a URL using the Scrapy downloader and print its content"
             " to stdout. You may want to use --nolog to disable logging"

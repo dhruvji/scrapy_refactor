@@ -31,10 +31,10 @@ class Command(ScrapyCommand):
     def syntax(self) -> str:
         return "[url|file]"
 
-    def short_desc(self) -> str:
+    def short_description(self) -> str:
         return "Interactive scraping console"
 
-    def long_desc(self) -> str:
+    def long_description(self) -> str:
         return (
             "Interactive console for scraping the given url or file. "
             "Use ./file.html syntax or full path for local file."

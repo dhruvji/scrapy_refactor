@@ -17,7 +17,7 @@ class Command(BaseRunSpiderCommand):
     def syntax(self) -> str:
         return "[options] <spider>"
 
-    def short_desc(self) -> str:
+    def short_description(self) -> str:
         return "Run a spider"
 
     def run(self, args: List[str], opts: argparse.Namespace) -> None:

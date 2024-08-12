@@ -13,7 +13,7 @@ class Command(ScrapyCommand):
     def syntax(self) -> str:
         return "[options]"
 
-    def short_desc(self) -> str:
+    def short_description(self) -> str:
         return "Get settings values"
 
     def add_options(self, parser: argparse.ArgumentParser) -> None:

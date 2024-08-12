@@ -113,7 +113,7 @@ def _print_commands(settings: BaseSettings, inproject: bool) -> None:
     print("Available commands:")
     cmds = _get_commands_dict(settings, inproject)
     for cmdname, cmdclass in sorted(cmds.items()):
-        print(f"  {cmdname:<13} {cmdclass.short_desc()}")
+        print(f"  {cmdname:<13} {cmdclass.short_description()}")
     if not inproject:
         print()
         print("  [ more ]      More commands available when run from project directory")
@@ -176,7 +176,7 @@ def execute(
         formatter_class=ScrapyHelpFormatter,
         usage=f"scrapy {cmdname} {cmd.syntax()}",
         conflict_handler="resolve",
-        description=cmd.long_desc(),
+        description=cmd.long_description(),
     )
     settings.setdict(cmd.default_settings, priority="command")
     cmd.settings = settings

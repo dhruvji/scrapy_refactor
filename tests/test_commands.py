@@ -1024,9 +1024,9 @@ class ViewCommandTest(CommandTest):
             conflict_handler="resolve",
         )
         command.add_options(parser)
-        self.assertEqual(command.short_desc(), "Open URL in browser, as seen by Scrapy")
+        self.assertEqual(command.short_description(), "Open URL in browser, as seen by Scrapy")
         self.assertIn(
-            "URL using the Scrapy downloader and show its", command.long_desc()
+            "URL using the Scrapy downloader and show its", command.long_description()
         )
 
 

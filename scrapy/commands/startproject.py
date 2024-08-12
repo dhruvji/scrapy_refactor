@@ -36,7 +36,7 @@ class Command(ScrapyCommand):
     def syntax(self) -> str:
         return "<project_name> [project_dir]"
 
-    def short_desc(self) -> str:
+    def short_description(self) -> str:
         return "Create new project"
 
     def _is_valid_name(self, project_name: str) -> bool:

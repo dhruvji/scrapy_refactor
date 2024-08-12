@@ -12,7 +12,7 @@ class Command(ScrapyCommand):
     requires_project = True
     default_settings = {"LOG_ENABLED": False}
 
-    def short_desc(self) -> str:
+    def short_description(self) -> str:
         return "List available spiders"
 
     def run(self, args: List[str], opts: argparse.Namespace) -> None:

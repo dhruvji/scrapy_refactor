@@ -42,18 +42,18 @@ class ScrapyCommand:
         """
         return ""
 
-    def short_desc(self) -> str:
+    def short_description(self) -> str:
         """
         A short description of the command
         """
         return ""
 
-    def long_desc(self) -> str:
+    def long_description(self) -> str:
         """A long description of the command. Return short description when not
         available. It cannot contain newlines since contents will be formatted
         by optparser which removes newlines and wraps text.
         """
-        return self.short_desc()
+        return self.short_description()
 
     def help(self) -> str:
         """An extensive help for the command. It will be shown when using the

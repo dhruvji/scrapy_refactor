@@ -9,10 +9,10 @@ logger = logging.getLogger(__name__)
 
 
 class Command(fetch.Command):
-    def short_desc(self) -> str:
+    def short_description(self) -> str:
         return "Open URL in browser, as seen by Scrapy"
 
-    def long_desc(self) -> str:
+    def long_description(self) -> str:
         return (
             "Fetch a URL using the Scrapy downloader and show its contents in a browser"
         )

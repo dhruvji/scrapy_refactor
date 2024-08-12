@@ -35,10 +35,10 @@ class Command(BaseRunSpiderCommand):
     def syntax(self) -> str:
         return "[options] <spider_file>"
 
-    def short_desc(self) -> str:
+    def short_description(self) -> str:
         return "Run a self-contained spider (without creating a project)"
 
-    def long_desc(self) -> str:
+    def long_description(self) -> str:
         return "Run the spider defined in the given file"
 
     def run(self, args: List[str], opts: argparse.Namespace) -> None:

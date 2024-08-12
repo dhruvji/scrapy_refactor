@@ -23,7 +23,7 @@ class Command(ScrapyCommand):
         "CLOSESPIDER_TIMEOUT": 10,
     }
 
-    def short_desc(self) -> str:
+    def short_description(self) -> str:
         return "Run quick benchmark test"
 
     def run(self, args: List[str], opts: argparse.Namespace) -> None:

@@ -14,10 +14,10 @@ class Command(ScrapyCommand):
     def syntax(self) -> str:
         return "<spider>"
 
-    def short_desc(self) -> str:
+    def short_description(self) -> str:
         return "Edit spider"
 
-    def long_desc(self) -> str:
+    def long_description(self) -> str:
         return (
             "Edit a spider using the editor defined in the EDITOR environment"
             " variable or else the EDITOR setting"

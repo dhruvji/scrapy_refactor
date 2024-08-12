@@ -47,7 +47,7 @@ class Command(ScrapyCommand):
     def syntax(self) -> str:
         return "[options] <name> <domain>"
 
-    def short_desc(self) -> str:
+    def short_description(self) -> str:
         return "Generate new spider using pre-defined templates"
 
     def add_options(self, parser: argparse.ArgumentParser) -> None:

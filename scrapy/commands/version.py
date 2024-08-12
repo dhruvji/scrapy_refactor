@@ -12,7 +12,7 @@ class Command(ScrapyCommand):
     def syntax(self) -> str:
         return "[-v]"
 
-    def short_desc(self) -> str:
+    def short_description(self) -> str:
         return "Print Scrapy version"
 
     def add_options(self, parser: argparse.ArgumentParser) -> None:

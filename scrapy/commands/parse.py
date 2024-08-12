@@ -58,7 +58,7 @@ class Command(BaseRunSpiderCommand):
     def syntax(self) -> str:
         return "[options] <url>"
 
-    def short_desc(self) -> str:
+    def short_description(self) -> str:
         return "Parse URL (using its spider) and print the results"
 
     def add_options(self, parser: argparse.ArgumentParser) -> None:
